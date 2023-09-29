@@ -14,3 +14,8 @@ Pipfile
 *.csv
 *.dat
 */.ipynb_checkpoints/*
+
+Include/
+Lib/
+Scripts/
+share/

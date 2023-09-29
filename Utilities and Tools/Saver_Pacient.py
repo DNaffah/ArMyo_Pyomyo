@@ -1,25 +1,6 @@
-'''
-Instructions:
-0. Install pynput and XGboost e.g. pip install pynput xgboost
-1. Run python dino_jump.py - This launches the training tool.
-2. Click on the pygame window thats opened to make sure windows sends the keypresses to that process.
-3. Relax the Myo arm, and with your other hand press 0 - This labels the incoming data as class 0
-4. Make a fist with your hand and press 1, to label the fist as 1.
-5. Try making a closed and open fist and watching the bars change.
-6. Once you've gathered enough data, exit the pygame window. This saves the data in data/vals0.dat and vals1.dat
-7. If you make a mistake and wrongly classify data, delete vals0 and vals1 and regather
-8. If your happy it works, change TRAINING_MODE to False.
-9. Goto https://trex-runner.com/ and rerun dino_jump.py with TRAINING_MODE set to false.
-10. Click in the brower to start the game and tell windows to send keypresses there
-11. Try making a fist and seeing if the dino jumps
 
-If it doesn't work, feel free to let me know in the discord: 
-https://discord.com/invite/mG58PVyk83
 
-- PerlinWarp
-'''
-
-import pygame
+import pygame          
 from pygame.locals import *
 from pynput.keyboard import Key, Controller
 from pyomyo import Myo, emg_mode
@@ -47,7 +28,7 @@ if __name__ == '__main__':
 	# Make an ML Model to train and test with live
 	# XGBoost Classifier Example
 	model = XGBClassifier(eval_metric='logloss')
-	clr = Live_Classifier(model, name="XG", color=(50,50,255))
+	clr = Live_Classifier(model, name="XG", color=(178,255,77))
 	m = MyoClassifier(clr, mode=emg_mode.PREPROCESSED, hist_len=10)
 
 	hnd = EMGHandler(m)
