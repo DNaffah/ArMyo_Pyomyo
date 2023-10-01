@@ -19,7 +19,7 @@ def dino_handler(pose):
 
 if __name__ == '__main__':
 	keyboard = Controller()
-
+          
 	pygame.init()
 	w, h = 800, 320
 	scr = pygame.display.set_mode((w, h))

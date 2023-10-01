@@ -25,7 +25,7 @@ def worker(q):
 			print("Battery level:", bat)
 
 	# Orange logo and bar LEDs
-	m.set_leds([128, 0, 0], [128, 0, 0])
+	m.set_leds([221, 140, 120], [221, 140, 120])
 	# Vibrate to know we connected okay
 	m.vibrate(1)
 	m.add_battery_handler(print_battery)
@@ -76,7 +76,7 @@ def animate(i):
 		for i in range(0,SENSORS):
 			channel = channels[:,i]
 			lines[i].set_ydata(channel)
-			subplots[i].set_ylim(0,max(1024,max(channel)))
+			subplots[i].set_ylim(0,max(128,max(channel)))
 
 if __name__ == '__main__':
 	# Start Myo Process
