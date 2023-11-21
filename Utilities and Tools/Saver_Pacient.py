@@ -8,24 +8,24 @@ from xgboost import XGBClassifier
 import Client 
 import time
 
-# from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier
 # from sklearn.svm import SVC
-# from sklearn.neighbors import KNeighborsClassifier
+from sklearn.neighbors import KNeighborsClassifier
 # from sklearn.neural_network import MLPClassifier
 
 
-host = '192.168.1.41'  # Dirección IP de tu Raspberry Pi
+host = '192.168.164.68'  # Dirección IP de tu Raspberry Pi
 port = 12345  # Puerto en el que está escuchando tu servidor en la Raspberry Pi
 
 
 def dino_handler(pose):
 	print("Pose detected", pose)
 	message = str(pose)
-	#Client.enviar_datos(client_socket, message)
-	# time.sleep(0.7)
+	Client.enviar_datos(client_socket, message)
+	time.sleep(0.7)
 if __name__ == '__main__':
 	keyboard = Controller()
-	#client_socket = Client.conectar_a_servidor(host, port)  
+	client_socket = Client.conectar_a_servidor(host, port)  
     
 	pygame.init()
 	w, h = 800, 320
@@ -33,8 +33,8 @@ if __name__ == '__main__':
 	font = pygame.font.Font(None, 30)
 
 	## Modelo de escalas logaritmicas en funciones no lineales
-	model = XGBClassifier(eval_metric='logloss')
-	clr = Live_Classifier(model, name="XG", color=(255,0,150))
+	# model = XGBClassifier(eval_metric='logloss')
+	# clr = Live_Classifier(model, name="XG", color=(255,0,150))
 	
 	
 	## Modelo de Red Perceptor multientrada
@@ -46,12 +46,11 @@ if __name__ == '__main__':
 	# clr = Live_Classifier(model, name="SVM", color=(255, 0, 150))
 	
 	## Modelo De Vecinos (sin probar)
-	# model = KNeighborsClassifier(n_neighbors=5)
-	# clr = Live_Classifier(model, name="KNN", color=(255, 0, 150))
-	 
+	#model = KNeighborsClassifier(n_neighbors=8)
+	#clr = Live_Classifier(model, name="KNN", color=(255, 0, 150))
 	## Modelo de arbol aleatorio 
-	# model = RandomForestClassifier(n_estimators=100, random_state=0)
-	# clr = Live_Classifier(model, name="RandomForest", color=(255, 0, 150))
+	model = RandomForestClassifier(n_estimators=60, random_state=0)
+	clr = Live_Classifier(model, name="RandomForest", color=(255, 0, 150))
 	m = MyoClassifier(clr, mode=emg_mode.PREPROCESSED, hist_len=40)
 	hnd = EMGHandler(m)
 	m.add_emg_handler(hnd)
@@ -78,5 +77,5 @@ if __name__ == '__main__':
 	finally:
 		m.disconnect()
 		print()
-		#client_socket.close()
+		client_socket.close()
 		pygame.quit()
