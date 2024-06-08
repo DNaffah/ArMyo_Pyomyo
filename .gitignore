@@ -1,0 +1,22 @@
+__pycache__/*
+*/__pycache__/*
+.ipynb_checkpoints/*
+
+# data/*
+# */data/*
+
+dist/*
+.venv
+.env/
+Pipfile
+*.egg-info
+
+*.dll
+*.csv
+*.dat
+*/.ipynb_checkpoints/*
+
+Include/
+Lib/
+Scripts/
+share/
