@@ -1,0 +1,21 @@
+# Ignorar carpetas de dependencias de Node.js
+node_modules/
+
+# Ignorar carpetas de dependencias de Python (si estás usando virtualenv)
+venv/
+.env/
+
+# Ignorar carpetas de dependencias de Ruby
+.bundle/
+vendor/bundle/
+
+# Ignorar archivos y carpetas de configuraciones específicas de IDEs
+.idea/
+.vscode/
+
+# Ignorar archivos de log
+*.log
+
+# Ignorar carpetas de build
+build/
+dist/
