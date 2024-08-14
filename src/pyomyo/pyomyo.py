@@ -2,6 +2,7 @@
 The MIT License (MIT)
 Copyright (c) 2020 PerlinWarp
 Copyright (c) 2014 Danny Zhu
+Copyright (c) 2024 DNaffah
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -32,12 +33,16 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	Edited by PerlinWarp
 		https://github.com/PerlinWarp/pyomyo
 
+	Edited by DNaffah
+		https://github.com/DNaffah/ArMyo_Pyomyo
+
 Warning, when using this library in a multithreaded way,
 know that any function called on Myo_Raw, may try to use the serial port,
 in windows if this is tried from a seperate thread you will get a permission error
 '''
 
 import enum
+import os
 import re
 import struct
 import sys
@@ -331,7 +336,7 @@ class Myo(object):
 			else:
 				print("No EMG mode selected, not sending EMG data")
 			# Stop the Myo Disconnecting
-			self.sleep_mode(1)
+			#self.sleep_mode(1) ## Posible delete
 
 			# enable battery notifications
 			self.write_attr(0x12, b'\x01\x10')
@@ -343,8 +348,8 @@ class Myo(object):
 
 			c, attr, typ = unpack('BHB', p.payload[:4])
 			pay = p.payload[5:]
-
-			if attr == 0x27:
+			#print(attr,"attr")
+			if attr == 0x27: #Detect EMG data
 				# Unpack a 17 byte array, first 16 are 8 unsigned shorts, last one an unsigned char
 				vals = unpack('8HB', pay)
 				# not entirely sure what the last byte is, but it's a bitmask that
@@ -354,7 +359,7 @@ class Myo(object):
 				moving = vals[8]
 				self.on_emg(emg, moving)
 			# Read notification handles corresponding to the for EMG characteristics
-			elif attr == 0x2b or attr == 0x2e or attr == 0x31 or attr == 0x34:
+			elif attr == 0x2b or attr == 0x2e or attr == 0x31 or attr == 0x34: #Detect emg data
 				'''According to http://developerblog.myo.com/myocraft-emg-in-the-bluetooth-protocol/
 				each characteristic sends two secuential readings in each update,
 				so the received payload is split in two samples. According to the
@@ -365,7 +370,7 @@ class Myo(object):
 				self.on_emg(emg1, 0)
 				self.on_emg(emg2, 0)
 			# Read IMU characteristic handle
-			elif attr == 0x1c:
+			elif attr == 0x1c: #Detect IMU data
 				vals = unpack('10h', pay)
 				quat = vals[:4]
 				acc = vals[4:7]
@@ -583,24 +588,31 @@ class Myo(object):
 		for h in self.battery_handlers:
 			h(battery_level)
 
+def cls():
+	# Clear the screen in a cross platform way
+	# https://stackoverflow.com/questions/517970/how-to-clear-the-interpreter-console
+    os.system('cls' if os.name=='nt' else 'clear')
+
 if __name__ == '__main__':
-	m = Myo(sys.argv[1] if len(sys.argv) >= 2 else None, mode=emg_mode.RAW)
+	m = Myo(sys.argv[1] if len(sys.argv) >= 2 else None, mode=emg_mode.PREPROCESSED)
 
 	def proc_emg(emg, moving, times=[]):
 		print(emg)
 
-	m.add_emg_handler(proc_emg)
+	#m.add_emg_handler(proc_emg)
 	m.connect()
 
-	m.add_arm_handler(lambda arm, xdir: print('arm', arm, 'xdir', xdir))
-	m.add_pose_handler(lambda p: print('pose', p))
-	# m.add_imu_handler(lambda quat, acc, gyro: print('quaternion', quat))
+	#m.add_arm_handler(lambda arm, xdir: print('arm', arm, 'xdir', xdir))
+	#m.add_pose_handler(lambda p: print('pose', p))
+	m.add_imu_handler(lambda quat, acc, gyro: print('quaternion', quat,"acceleration", acc,"gyroscope",gyro))
 	m.sleep_mode(1)
 	m.set_leds([128, 128, 255], [128, 128, 255])  # purple logo and bar LEDs
-	m.vibrate(1)
-
+	#m.vibrate(1)
+	i=0
 	try:
-		while True:
+		while i < 2000:
+			i=i+1
+			cls()
 			m.run()
 
 	except KeyboardInterrupt:

@@ -11,7 +11,7 @@ def cls():
 q = multiprocessing.Queue()
 
 def worker(q):
-	m = Myo(mode=emg_mode.FILTERED)
+	m = Myo(mode=emg_mode.RAW)
 	m.connect()
 	
 	def add_to_queue(quat, acc, gyro):

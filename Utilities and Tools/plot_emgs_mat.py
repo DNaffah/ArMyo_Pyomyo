@@ -75,7 +75,7 @@ def animate(i):
         for i in range(0, SENSORS):
             channel = channels[:, i]
             lines[i].set_ydata(channel)
-            subplots[i].set_ylim(0, max(1024, max(channel)))
+            subplots[i].set_ylim(0, max(100, max(channel)))
 
 if __name__ == '__main__':
     # Start Myo Process

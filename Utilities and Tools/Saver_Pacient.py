@@ -21,11 +21,11 @@ port = 12345  # Puerto en el que está escuchando tu servidor en la Raspberry Pi
 def dino_handler(pose):
 	print("Pose detected", pose)
 	message = str(pose)
-	Client.enviar_datos(client_socket, message)
+	#Client.enviar_datos(client_socket, message)
 	time.sleep(0.7)
 if __name__ == '__main__':
 	keyboard = Controller()
-	client_socket = Client.conectar_a_servidor(host, port)  
+	#client_socket = Client.conectar_a_servidor(host, port)  
     
 	pygame.init()
 	w, h = 800, 320
@@ -77,5 +77,5 @@ if __name__ == '__main__':
 	finally:
 		m.disconnect()
 		print()
-		client_socket.close()
+		#client_socket.close()
 		pygame.quit()
